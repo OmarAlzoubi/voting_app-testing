@@ -10,6 +10,8 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+  flutter_svg: ^1.1.6
+  google_fonts: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -17,5 +19,7 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
 flutter:
-
   uses-material-design: true
+  assets:
+    - assets/
+    - assets/svg/
