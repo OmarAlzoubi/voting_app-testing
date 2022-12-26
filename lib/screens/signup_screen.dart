@@ -1,12 +1,70 @@
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-import 'package:voting_app/screens/signin_screen.dart';
-import 'package:voting_app/screens/splash.dart';
+import 'package:voting_app/constants/routes.dart';
+import 'package:voting_app/providers/auth/supabase_auth_provider.dart';
 import 'package:voting_app/utils/colours.dart';
+import 'package:voting_app/widgets/krapi_form_field.dart';
 import 'package:voting_app/widgets/krapi_text_button.dart';
-import 'package:voting_app/widgets/krapi_text_field.dart';
 
-class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
+import '../role.dart';
+
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key, required this.role});
+
+  final Role role;
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
+  late final TextEditingController _nameController;
+  late final TextEditingController _electionidController;
+  late final TextEditingController _emailController;
+  late final TextEditingController _phoneNumberController;
+  late final TextEditingController _partyController;
+  late final TextEditingController _passwordController;
+
+  Future<void> _signUp() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+    final name = _nameController.text;
+    final electionid = _electionidController.text;
+    final mobile = _phoneNumberController.text;
+    final party = _partyController.text;
+
+    SupabaseAuthProvider provider = SupabaseAuthProvider();
+
+    await provider.signUp(email: email, password: password, metaData: {
+      "email": email,
+      "name": name,
+      "electionid": electionid,
+      "mobile": mobile,
+      "role": EnumToString.convertToString(widget.role),
+      "party": party,
+    });
+  }
+
+  @override
+  void initState() {
+    _nameController = TextEditingController();
+    _electionidController = TextEditingController();
+    _emailController = TextEditingController();
+    _phoneNumberController = TextEditingController();
+    _partyController = TextEditingController();
+    _passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _electionidController.dispose();
+    _emailController.dispose();
+    _phoneNumberController.dispose();
+    _partyController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,91 +111,67 @@ class SignupScreen extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Text(
-                          "Enter your full name:",
-                          style: labelTextStyle,
-                        ),
-                      ),
-                      const KrapiTextField(
+                      KrapiFormFiled(
+                        upperLabel: "Enter your full name",
                         hintText: "Full Name",
                         obscureText: false,
+                        controller: _nameController,
                       ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Text(
-                          "Enter your election ID:",
-                          style: labelTextStyle,
-                        ),
-                      ),
-                      const KrapiTextField(
+                      KrapiFormFiled(
+                        upperLabel: "Enter your election ID",
                         hintText: "Election ID",
                         obscureText: false,
+                        controller: _electionidController,
                       ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Text(
-                          "Enter your personal email:",
-                          style: labelTextStyle,
-                        ),
-                      ),
-                      const KrapiTextField(
+                      KrapiFormFiled(
+                        upperLabel: "Enter your personal Email",
                         hintText: "E-mail",
                         obscureText: false,
+                        controller: _emailController,
                       ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Text(
-                          "Enter your mobile number:",
-                          style: labelTextStyle,
-                        ),
-                      ),
-                      const KrapiTextField(
+                      KrapiFormFiled(
+                        upperLabel: "Enter your mobile number",
                         hintText: "Mobile Number",
                         obscureText: false,
+                        controller: _phoneNumberController,
                       ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Text(
-                          "Enter your password:",
-                          style: labelTextStyle,
+                      Visibility(
+                        visible: widget.role == Role.candidate,
+                        child: KrapiFormFiled(
+                          upperLabel: "Enter your party",
+                          hintText: "Party",
+                          obscureText: false,
+                          controller: _partyController,
                         ),
                       ),
-                      const KrapiTextField(
+                      KrapiFormFiled(
+                        upperLabel: "Enter your password",
                         hintText: "Password",
                         obscureText: true,
+                        controller: _passwordController,
                       ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Text(
-                          "Confirm your password:",
-                          style: labelTextStyle,
-                        ),
-                      ),
-                      const KrapiTextField(
+                      KrapiFormFiled(
+                        upperLabel: "Confirm your password",
                         hintText: "Confirm Password",
                         obscureText: true,
+                        controller: _passwordController,
                       ),
                     ]),
               ),
               const SizedBox(height: 10),
-              KrapiTextButton(text: "Sign Up", onTap: () {}),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const SignInScreen(),
-                    ));
-                  },
-                  child: Text(
-                    "Already a member? Sign in",
-                    style: loginSignUpHelpTextStyle,
-                  )),
+              KrapiTextButton(
+                  text: "Sign Up",
+                  onTap: () async {
+                    //TODO Validate all fields before signing up (use Form).
+
+                    await _signUp();
+
+                    if (!mounted) return;
+
+                    Navigator.of(context).pushNamed(
+                      homeScreenRoute,
+                    );
+                  }),
             ],
           ),
         ),

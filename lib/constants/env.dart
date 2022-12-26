@@ -1,0 +1,3 @@
+const supabaseURL = "https://yrjszjjjtldaquihylsu.supabase.co";
+const anonKey =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlyanN6ampqdGxkYXF1aWh5bHN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzEyMDQwMzgsImV4cCI6MTk4Njc4MDAzOH0.IDknLe7x83vjCW4HfTPEEhkaa1SIkCputjp75GRVmMM";

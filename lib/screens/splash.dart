@@ -1,11 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:voting_app/screens/signup_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:voting_app/constants/routes.dart';
 import 'package:voting_app/utils/colours.dart';
 import 'package:voting_app/widgets/krapi_text_button.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _getInitialAuthState();
+  }
+
+  Future<void> _getInitialAuthState() async {
+    try {
+      final initialSession = await SupabaseAuth.instance.initialSession;
+      // Redirect users to home screen if is already signed in.
+
+      if (initialSession != null) {
+        if (!mounted) return;
+        Navigator.of(context).pushNamed(
+          homeScreenRoute,
+        );
+      }
+    } catch (e) {
+      //TODO Handle initial auth state fetch error here
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +67,9 @@ class SplashScreen extends StatelessWidget {
               child: KrapiTextButton(
                   text: 'Get Started',
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const SignupScreen(),
-                    ));
+                    Navigator.of(context).pushNamed(
+                      choseRoleScreenRoute,
+                    );
                   }),
             ),
           ],

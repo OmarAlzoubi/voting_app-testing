@@ -1,13 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:voting_app/screens/signup_screen.dart';
-import 'package:voting_app/screens/splash.dart';
+import 'package:voting_app/constants/routes.dart';
+import 'package:voting_app/providers/auth/supabase_auth_provider.dart';
 import 'package:voting_app/utils/colours.dart';
+import 'package:voting_app/widgets/krapi_form_field.dart';
 import 'package:voting_app/widgets/krapi_text_button.dart';
-import 'package:voting_app/widgets/krapi_text_field.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
+
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+
+  Future<void> _signIn() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    SupabaseAuthProvider provider = SupabaseAuthProvider();
+
+    await provider.signIn(email: email, password: password);
+  }
+
+  @override
+  void initState() {
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,53 +78,36 @@ class SignInScreen extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Text(
-                          "Enter your Election ID:",
-                          style: labelTextStyle,
-                        ),
-                      ),
-                      const KrapiTextField(
-                        hintText: "Election ID",
-                        obscureText: false,
-                      ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Text(
-                          "Enter your Personal Email:",
-                          style: labelTextStyle,
-                        ),
-                      ),
-                      const KrapiTextField(
+                      KrapiFormFiled(
+                        upperLabel: "Enter your personal Email",
                         hintText: "E-mail",
                         obscureText: false,
+                        controller: _emailController,
                       ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: Text(
-                          "Enter your password:",
-                          style: labelTextStyle,
-                        ),
-                      ),
-                      const KrapiTextField(
-                        hintText: "Password",
-                        obscureText: true,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      KrapiFormFiled(
+                          upperLabel: "Enter your password",
+                          hintText: "Password",
+                          obscureText: true,
+                          controller: _passwordController),
                     ]),
               ),
               const SizedBox(height: 10),
-              KrapiTextButton(text: "Sign In", onTap: () {}),
+              KrapiTextButton(
+                  text: "Sign In",
+                  onTap: () async {
+                    await _signIn();
+
+                    if (!mounted) return;
+
+                    Navigator.of(context).pushNamed(
+                      homeScreenRoute,
+                    );
+                  }),
               TextButton(
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const SignupScreen(),
-                    ));
+                    Navigator.of(context).pushNamed(
+                      choseRoleScreenRoute,
+                    );
                   },
                   child: Text(
                     "Don't have an account? Sign Up",
