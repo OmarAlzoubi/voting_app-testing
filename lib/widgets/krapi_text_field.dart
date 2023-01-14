@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:voting_app/utils/colours.dart';
 
 class KrapiTextField extends StatelessWidget {
-  final String hintText;
-  final bool obscureText;
-  final TextEditingController controller;
+  final String upperLabel;
+  final TextStyle labelTextStyle;
+  final TextField textField;
 
   const KrapiTextField(
       {super.key,
-      required this.hintText,
-      required this.obscureText,
-      required this.controller});
+      required this.upperLabel,
+      required this.textField,
+      required this.labelTextStyle});
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: backGroundColour,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: Text(
+            upperLabel,
+            style: labelTextStyle,
+          ),
         ),
-        hintText: hintText,
-        hintStyle: hintTextStyle,
-      ),
-      obscureText: obscureText,
+        textField
+      ],
     );
   }
 }

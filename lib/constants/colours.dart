@@ -3,12 +3,15 @@ import 'package:google_fonts/google_fonts.dart';
 
 //Colours
 const backGroundColour = Color.fromRGBO(218, 252, 244, 1);
-const fillColour = Color.fromRGBO(21, 45, 53, 1);
+const fillColour1 = Color.fromRGBO(21, 45, 53, 1);
+const fillColour2 = Color.fromRGBO(52, 91, 99, 1);
 
 const buttonTextColour = Color.fromRGBO(218, 252, 244, 1);
 const paragraphTextColour = Color.fromRGBO(52, 91, 99, 1);
-const labelTextColour = Color.fromRGBO(218, 252, 244, 1);
-const hintTextColour = Color.fromRGBO(99, 128, 134, 1);
+const labelTextColour1 = Color.fromRGBO(218, 252, 244, 1);
+const labelTextColour2 = Color.fromRGBO(21, 45, 53, 1);
+const hintTextColour1 = Color.fromRGBO(99, 128, 134, 1);
+const hintTextColour2 = Color.fromRGBO(218, 252, 244, 1);
 const iconTextColour = Color.fromRGBO(52, 91, 99, 1);
 const loginSignUpHelpTextColour = Color.fromRGBO(21, 45, 53, 1);
 
@@ -28,14 +31,26 @@ final paragraphTextStyle = GoogleFonts.poppins(
 final buttonTextStyle = GoogleFonts.poppins(
     fontSize: 20, fontWeight: FontWeight.w600, fontStyle: FontStyle.normal);
 
-final labelTextStyle = GoogleFonts.poppins(
-    color: labelTextColour,
+final labelTextStyle1 = GoogleFonts.poppins(
+    color: labelTextColour1,
     fontSize: 14,
     fontWeight: FontWeight.w400,
     fontStyle: FontStyle.normal);
 
-final hintTextStyle = GoogleFonts.poppins(
-    color: hintTextColour,
+final labelTextStyle2 = GoogleFonts.poppins(
+    color: labelTextColour2,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    fontStyle: FontStyle.normal);
+
+final hintTextStyle1 = GoogleFonts.poppins(
+    color: hintTextColour1,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    fontStyle: FontStyle.normal);
+
+final hintTextStyle2 = GoogleFonts.poppins(
+    color: hintTextColour2,
     fontSize: 16,
     fontWeight: FontWeight.w400,
     fontStyle: FontStyle.normal);
