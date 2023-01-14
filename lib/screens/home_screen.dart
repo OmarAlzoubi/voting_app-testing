@@ -16,12 +16,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late SupabaseAuthProvider provider;
+  final SupabaseAuthProvider provider = SupabaseAuthProvider();
 
   @override
   void initState() {
-    provider = SupabaseAuthProvider();
-
     super.initState();
     setState(() {});
   }
